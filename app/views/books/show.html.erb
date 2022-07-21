@@ -12,22 +12,22 @@
         <tbody>
           <td>
       <%= link_to user_path(@user.id) do %>
-            <%= image_tag @user.get_profile_image(100, 100) %></td>
+            <%= image_tag @user.get_profile_image(100, 100) %>
             <% end %>
         <p><%= link_to @user.name, user_path(@user.id) %></p>
       </td>
       <td><%= link_to @book1.title, book_path(@book1.id) %></td>
       <td><p><%= @book1.body %></p></td>
-      
+
       <% if @book1.user == current_user %>
       <td>
           <%= link_to "Edit", edit_book_path(@book1.id), class:"btn btn-success" %>
         </td>
       <% end %>
-      
+
       <% if @book1.user == current_user %>
       <td>
-          <%= link_to "Destroy", books_path, class:"btn btn-danger" %>
+          <%= link_to "Destroy", book_path(@book1.id), method: :delete, class:"btn btn-danger" %>
         </td>
       <% end %>
       </tbody>
