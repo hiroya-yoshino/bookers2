@@ -1,4 +1,6 @@
 class BooksController < ApplicationController
+  before_action :authenticate_user!
+  
   def new
     @book = Book.new
     redirect_to book_path(book_params)
@@ -11,7 +13,9 @@ class BooksController < ApplicationController
       flash[:notice] = "You have created book successfully."
       redirect_to book_path(@book)
     else
-      render 'books/index'
+      @user = current_user
+      @books = Book.all
+      render :index
     end
   end
   
@@ -22,14 +26,21 @@ class BooksController < ApplicationController
   end
   
   def edit
-    @book = Book.find(params[:id])
+    if @user == current_user
+      @book = Book.find(params[:id])
+    else
+      redirect_to user_path(current_user.id)
+    end
   end
   
   def update
     @book = Book.find(params[:id])
-    @book.update(book_params)
-    flash[:notice] = "You have updated book successfully."
-    redirect_to book_path(@book)
+    if @book.update(book_params)
+      flash[:notice] = "You have updated book successfully."
+      redirect_to book_path(@book)
+    else
+      render :edit
+    end
   end
   
   def destroy
