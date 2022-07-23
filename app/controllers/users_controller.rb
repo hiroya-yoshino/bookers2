@@ -29,6 +29,11 @@ class UsersController < ApplicationController
   @book = Book.new
   end
   
+  def destroy
+    flash[:notice] = "Signed out successfully."
+    redirect_to root_path
+  end
+  
   private
   
   def user_params
